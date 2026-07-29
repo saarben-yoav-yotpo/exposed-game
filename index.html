@@ -752,10 +752,6 @@
                                 </div>
                             </div>
                             <div class="card-face card-back">
-                                <div class="card-back-content">
-                                    <div class="back-icon">❓</div>
-                                    <div class="back-text">Trivia</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -784,7 +780,7 @@
                                 <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Shirt</div>
                                 <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Pants</div>
                                 <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Underwear</div>
-                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Bra/Tank</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Bra</div>
                                 <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Belt</div>
                             </div>
                         </div>
@@ -806,10 +802,6 @@
                                 </div>
                             </div>
                             <div class="card-face card-back">
-                                <div class="card-back-content">
-                                    <div class="back-icon">🔥</div>
-                                    <div class="back-text">Penalty</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1041,8 +1033,12 @@
             const illustrationIndex = randomIndex % penaltyIllustrations.length;
             document.getElementById('penaltyImage').innerHTML = penaltyIllustrations[illustrationIndex];
 
-            // Clothing roulette - randomly select a non-removed item
-            clothingRoulette();
+            // Clothing roulette - spinning animation
+            clothingRouletteSpinning();
+
+            // Switch player turn after penalty card drawn
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            updateTurnIndicator();
         }
 
         // Turn switching
@@ -1069,7 +1065,7 @@
             }, 500);
         }
 
-        function clothingRoulette() {
+        function clothingRouletteSpinning() {
             // Clear any previous selections
             document.querySelectorAll('.strip-item').forEach(item => {
                 item.classList.remove('selected');
@@ -1086,15 +1082,39 @@
                 }
             });
 
-            // If there are items left, select one randomly
+            // If there are items left, spin through them like a roulette
             if (availableItems.length > 0) {
-                const randomItemIndex = availableItems[Math.floor(Math.random() * availableItems.length)];
-                stripItems[randomItemIndex].classList.add('selected');
+                let currentIndex = 0;
+                let spinCount = 0;
+                const totalSpins = 15 + Math.floor(Math.random() * 10); // 15-25 spins
+                let spinInterval = 80; // Start fast
 
-                // Keep it glowing for 3 seconds then fade
-                setTimeout(() => {
-                    stripItems[randomItemIndex].classList.remove('selected');
-                }, 3000);
+                function spin() {
+                    // Clear previous selection
+                    stripItems.forEach(item => item.classList.remove('selected'));
+
+                    // Highlight current item
+                    const itemIndex = availableItems[currentIndex % availableItems.length];
+                    stripItems[itemIndex].classList.add('selected');
+
+                    spinCount++;
+                    currentIndex++;
+
+                    if (spinCount < totalSpins) {
+                        // Slow down progressively
+                        if (spinCount > totalSpins - 8) {
+                            spinInterval += 50; // Slow down near the end
+                        }
+                        setTimeout(spin, spinInterval);
+                    } else {
+                        // Final selection - keep glowing for 3 seconds
+                        setTimeout(() => {
+                            stripItems[itemIndex].classList.remove('selected');
+                        }, 3000);
+                    }
+                }
+
+                spin();
             }
         }
 

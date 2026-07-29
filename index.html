@@ -367,9 +367,15 @@
         }
 
         .trivia-badge {
-            background: rgba(59, 130, 246, 0.3);
-            border: 1px solid rgba(59, 130, 246, 0.6);
-            color: #3b82f6;
+            background: rgba(138, 43, 226, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.6);
+            color: #9370db;
+        }
+
+        .penalty-deck .card-badge {
+            background: rgba(220, 20, 60, 0.3);
+            border: 1px solid rgba(220, 20, 60, 0.6);
+            color: #dc143c;
         }
 
         .card-title {
@@ -469,7 +475,33 @@
         }
 
         .trivia-deck .back-icon {
-            filter: drop-shadow(0 0 35px rgba(255, 105, 180, 1));
+            filter: drop-shadow(0 0 35px rgba(138, 43, 226, 1));
+        }
+
+        .trivia-deck .back-text {
+            color: #9370db;
+            text-shadow:
+                0 0 20px rgba(138, 43, 226, 0.9),
+                0 0 40px rgba(138, 43, 226, 0.5);
+        }
+
+        .penalty-deck .back-icon {
+            filter: drop-shadow(0 0 35px rgba(220, 20, 60, 1));
+        }
+
+        .penalty-deck .back-text {
+            color: #dc143c;
+            text-shadow:
+                0 0 20px rgba(220, 20, 60, 0.9),
+                0 0 40px rgba(220, 20, 60, 0.5);
+        }
+
+        .trivia-deck .card-back {
+            border-color: rgba(138, 43, 226, 0.6);
+        }
+
+        .penalty-deck .card-back {
+            border-color: rgba(220, 20, 60, 0.6);
         }
 
         .back-text {
@@ -620,47 +652,25 @@
             <div class="badge">🔥 Digital Foreplay Card Deck</div>
             <h1>EXPOSED</h1>
             <p class="subtitle">An Erotic Trivia & Sensual Forfeits Game for Couples</p>
+
+            <div style="max-width: 700px; margin: 20px auto; padding: 20px; background: rgba(10, 2, 8, 0.7); border: 2px solid rgba(255, 105, 180, 0.4); border-radius: 15px; text-align: left; font-size: 0.95rem; line-height: 1.6;">
+                <h3 style="color: #ff69b4; margin-bottom: 12px; text-align: center;">🎮 How to Play</h3>
+                <p><strong>1.</strong> Players take turns drawing trivia questions about each other</p>
+                <p><strong>2.</strong> If you answer correctly, earn 1 point. If wrong, draw a penalty card!</p>
+                <p><strong>3.</strong> Complete the sensual forfeit on the penalty card</p>
+                <p><strong>4.</strong> First to reach <strong>5 points wins</strong> and claims control for the night 👑</p>
+                <p style="margin-top: 12px; font-style: italic; color: rgba(248, 229, 229, 0.8);">💡 Tip: Tap any card to flip it and see the decorative back</p>
+            </div>
         </div>
 
         <div class="game-info">
             <div class="scoreboard">
                 <div class="player-card">
-                    <div class="player-name">Player 1</div>
+                    <div class="player-name" contenteditable="true" id="player1Name" style="cursor: text; padding: 5px; border-radius: 5px; transition: all 0.3s;" onfocus="this.style.background='rgba(255,105,180,0.2)'" onblur="this.style.background='transparent'">Player 1</div>
                     <div class="score-display" id="score1">0</div>
                     <div class="score-buttons">
                         <button class="score-btn" onclick="updateScore(1, 1)">+</button>
                         <button class="score-btn" onclick="updateScore(1, -1)">−</button>
-                    </div>
-                    <div class="strip-counter">
-                        <div class="strip-label">Clothing Items</div>
-                        <div class="strip-items" id="strip1">
-                            <div class="strip-item" onclick="toggleStrip(1, 0)">Socks</div>
-                            <div class="strip-item" onclick="toggleStrip(1, 1)">Shirt</div>
-                            <div class="strip-item" onclick="toggleStrip(1, 2)">Pants</div>
-                            <div class="strip-item" onclick="toggleStrip(1, 3)">Underwear</div>
-                            <div class="strip-item" onclick="toggleStrip(1, 4)">Bra</div>
-                            <div class="strip-item" onclick="toggleStrip(1, 5)">Belt</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="player-card">
-                    <div class="player-name">Player 2</div>
-                    <div class="score-display" id="score2">0</div>
-                    <div class="score-buttons">
-                        <button class="score-btn" onclick="updateScore(2, 1)">+</button>
-                        <button class="score-btn" onclick="updateScore(2, -1)">−</button>
-                    </div>
-                    <div class="strip-counter">
-                        <div class="strip-label">Clothing Items</div>
-                        <div class="strip-items" id="strip2">
-                            <div class="strip-item" onclick="toggleStrip(2, 0)">Socks</div>
-                            <div class="strip-item" onclick="toggleStrip(2, 1)">Shirt</div>
-                            <div class="strip-item" onclick="toggleStrip(2, 2)">Pants</div>
-                            <div class="strip-item" onclick="toggleStrip(2, 3)">Underwear</div>
-                            <div class="strip-item" onclick="toggleStrip(2, 4)">Tank</div>
-                            <div class="strip-item" onclick="toggleStrip(2, 5)">Belt</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -669,13 +679,14 @@
 
         <div class="decks-container">
             <!-- Trivia Deck -->
-            <div class="deck-area trivia-deck">
+            <div class="deck-area trivia-deck" style="border-color: rgba(138, 43, 226, 0.5);">
+
                 <div class="deck-background"></div>
                 <div class="deck-content">
                     <div class="deck-header">
-                        <div class="deck-title">Trivia Deck</div>
+                        <div class="deck-title" style="color: #9370db; text-shadow: 0 0 20px rgba(147, 112, 219, 0.8), 0 0 40px rgba(147, 112, 219, 0.4);">Trivia Deck</div>
                     </div>
-                    <button class="draw-button" onclick="drawTriviaCard()">🎴 Draw Question</button>
+                    <button class="draw-button" style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.6) 0%, rgba(147, 112, 219, 0.6) 100%); border-color: #9370db; box-shadow: 0 8px 25px rgba(138, 43, 226, 0.5), 0 0 40px rgba(138, 43, 226, 0.3);" onmouseover="this.style.background='linear-gradient(135deg, rgba(138, 43, 226, 0.9) 0%, rgba(147, 112, 219, 0.9) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(138, 43, 226, 0.6) 0%, rgba(147, 112, 219, 0.6) 100%)'" onclick="drawTriviaCard()">🎴 Draw Question</button>
                     <div class="card-container">
                         <div class="card-inner" id="triviaCard" onclick="flipCard('trivia')">
                             <div class="card-face card-front">
@@ -701,13 +712,35 @@
             </div>
 
             <!-- Penalty Deck -->
-            <div class="deck-area penalty-deck">
+            <div class="deck-area penalty-deck" style="border-color: rgba(220, 20, 60, 0.5);">
+
                 <div class="deck-background"></div>
                 <div class="deck-content">
                     <div class="deck-header">
-                        <div class="deck-title">Penalty Deck</div>
+                        <!-- Turn Indicator -->
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <div style="display: inline-block; padding: 8px 20px; border-radius: 25px; font-size: 1rem; letter-spacing: 2px; transition: all 0.5s ease; background: rgba(220, 20, 60, 0.3); border: 2px solid rgba(220, 20, 60, 0.6);" id="turnIndicator">
+                                <span id="currentPlayerName">Player 1</span>'s Turn
+                            </div>
+                            <div style="font-size: 0.75rem; color: rgba(248, 229, 229, 0.6); margin-top: 5px;">Click to switch turn</div>
+                        </div>
+
+                        <!-- Clothing Counter -->
+                        <div class="strip-counter" style="margin-bottom: 20px; text-align: center;">
+                            <div class="strip-label" style="color: #dc143c;">Clothing Items</div>
+                            <div class="strip-items" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 300px; margin: 0 auto;">
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Socks</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Shirt</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Pants</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Underwear</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Bra/Tank</div>
+                                <div class="strip-item" style="border-color: rgba(220, 20, 60, 0.5);">Belt</div>
+                            </div>
+                        </div>
+
+                        <div class="deck-title" style="color: #dc143c; text-shadow: 0 0 20px rgba(220, 20, 60, 0.8), 0 0 40px rgba(220, 20, 60, 0.4);">Penalty Deck</div>
                     </div>
-                    <button class="draw-button" onclick="drawPenaltyCard()">💋 Draw Penalty</button>
+                    <button class="draw-button" style="background: linear-gradient(135deg, rgba(220, 20, 60, 0.6) 0%, rgba(178, 34, 34, 0.6) 100%); border-color: #dc143c; box-shadow: 0 8px 25px rgba(220, 20, 60, 0.5), 0 0 40px rgba(220, 20, 60, 0.3);" onmouseover="this.style.background='linear-gradient(135deg, rgba(220, 20, 60, 0.9) 0%, rgba(178, 34, 34, 0.9) 100%)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(220, 20, 60, 0.6) 0%, rgba(178, 34, 34, 0.6) 100%)'" onclick="drawPenaltyCard()">💋 Draw Penalty</button>
                     <div class="card-container">
                         <div class="card-inner" id="penaltyCard" onclick="flipCard('penalty')">
                             <div class="card-face card-front">
@@ -751,6 +784,7 @@
         let isPenaltyFlipped = false;
         let usedTriviaCards = [];
         let usedPenaltyCards = [];
+        let currentPlayer = 1;
 
         // Trivia Cards
         const triviaCards = [
@@ -883,24 +917,25 @@
 
         function resetGame() {
             scores = { 1: 0, 2: 0 };
+            currentPlayer = 1;
             document.getElementById('score1').textContent = '0';
             document.getElementById('score2').textContent = '0';
             document.getElementById('winnerModal').classList.remove('show');
 
-            // Reset strip counters
+            // Reset clothing items
             document.querySelectorAll('.strip-item').forEach(item => {
                 item.classList.remove('removed');
+                item.classList.remove('selected');
             });
 
             // Reset card states
             usedTriviaCards = [];
             usedPenaltyCards = [];
+
+            // Reset turn indicator
+            updateTurnIndicator();
         }
 
-        function toggleStrip(player, itemIndex) {
-            const stripItems = document.getElementById(`strip${player}`).children;
-            stripItems[itemIndex].classList.toggle('removed');
-        }
 
         function flipCard(deckType) {
             const card = document.getElementById(`${deckType}Card`);
@@ -960,23 +995,46 @@
             clothingRoulette();
         }
 
+        // Turn switching
+        document.getElementById('turnIndicator').addEventListener('click', function() {
+            currentPlayer = currentPlayer === 1 ? 2 : 1;
+            updateTurnIndicator();
+        });
+
+        function updateTurnIndicator() {
+            const playerName = document.getElementById(`player${currentPlayer}Name`).textContent;
+            document.getElementById('currentPlayerName').textContent = playerName;
+            const indicator = document.getElementById('turnIndicator');
+
+            // Add glow effect
+            indicator.style.background = 'rgba(220, 20, 60, 0.6)';
+            indicator.style.border = '2px solid #dc143c';
+            indicator.style.boxShadow = '0 0 25px rgba(220, 20, 60, 0.9), 0 0 50px rgba(220, 20, 60, 0.6)';
+            indicator.style.transform = 'scale(1.05)';
+
+            setTimeout(() => {
+                indicator.style.background = 'rgba(220, 20, 60, 0.3)';
+                indicator.style.boxShadow = 'none';
+                indicator.style.transform = 'scale(1)';
+            }, 500);
+        }
+
         function clothingRoulette() {
             // Clear any previous selections
             document.querySelectorAll('.strip-item').forEach(item => {
                 item.classList.remove('selected');
             });
 
-            // Randomly choose which player (1 or 2)
-            const player = Math.random() < 0.5 ? 1 : 2;
-            const stripItems = document.getElementById(`strip${player}`).children;
+            // Get the clothing items from penalty deck
+            const stripItems = document.querySelectorAll('.penalty-deck .strip-item');
 
             // Get non-removed items
             const availableItems = [];
-            for (let i = 0; i < stripItems.length; i++) {
-                if (!stripItems[i].classList.contains('removed')) {
-                    availableItems.push(i);
+            stripItems.forEach((item, index) => {
+                if (!item.classList.contains('removed')) {
+                    availableItems.push(index);
                 }
-            }
+            });
 
             // If there are items left, select one randomly
             if (availableItems.length > 0) {
@@ -989,6 +1047,16 @@
                 }, 3000);
             }
         }
+
+        // Make clothing items clickable to toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const clothingItems = document.querySelectorAll('.penalty-deck .strip-item');
+            clothingItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    this.classList.toggle('removed');
+                });
+            });
+        });
     </script>
 </body>
 </html>

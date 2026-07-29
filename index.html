@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPOSED - Erotic Trivia & Sensual Forfeits</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a0612 0%, #0a0208 50%, #1a0612 100%);
+            min-height: 100vh;
+            color: #f8e5e5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(255, 105, 180, 0.3);
+            border: 2px solid #ff69b4;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.4);
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #ff69b4;
+            text-shadow:
+                0 0 30px rgba(255, 105, 180, 0.8),
+                0 0 60px rgba(255, 105, 180, 0.4);
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 229, 229, 0.8);
+            letter-spacing: 3px;
+        }
+
+        /* Game Info */
+        .game-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .scoreboard {
+            display: flex;
+            gap: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .player-card {
+            background: rgba(10, 2, 8, 0.9);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow:
+                0 8px 32px rgba(255, 105, 180, 0.4),
+                0 0 40px rgba(255, 105, 180, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            flex: 1;
+        }
+
+        .player-name {
+            font-size: 1.1rem;
+            color: #ff69b4;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f8e5e5;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+        }
+
+        .score-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .score-btn {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.4) 0%, rgba(255, 20, 147, 0.4) 100%);
+            border: 2px solid #ff69b4;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .score-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.6) 0%, rgba(255, 20, 147, 0.6) 100%);
+        }
+
+        .strip-counter {
+            margin-top: 15px;
+        }
+
+        .strip-label {
+            font-size: 0.85rem;
+            color: rgba(248, 229, 229, 0.7);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .strip-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .strip-item {
+            padding: 6px 8px;
+            background: rgba(50, 20, 35, 0.6);
+            border: 2px solid rgba(255, 105, 180, 0.4);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            font-size: 0.7rem;
+            text-align: center;
+            color: #f8e5e5;
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.2);
+        }
+
+        .strip-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+        }
+
+        .strip-item.removed {
+            background: transparent;
+            border-color: rgba(255, 105, 180, 0.2);
+            opacity: 0.4;
+            text-decoration: line-through;
+        }
+
+        .strip-item.selected {
+            background: rgba(255, 105, 180, 0.8);
+            border: 2px solid #ff69b4;
+            box-shadow:
+                0 0 25px rgba(255, 105, 180, 0.9),
+                0 0 50px rgba(255, 105, 180, 0.6),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            transform: scale(1.15);
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1.15); }
+            50% { transform: scale(1.25); }
+        }
+
+        /* Decks Container */
+        .decks-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .deck-area {
+            background: rgba(10, 2, 8, 0.85);
+            border: 3px solid rgba(255, 105, 180, 0.5);
+            border-radius: 25px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 15px 50px rgba(0, 0, 0, 0.8),
+                0 0 50px rgba(255, 105, 180, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .deck-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 20, 147, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .deck-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .deck-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .deck-title {
+            font-size: 2rem;
+            color: #ff69b4;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            text-shadow:
+                0 0 20px rgba(255, 105, 180, 0.8),
+                0 0 40px rgba(255, 105, 180, 0.4);
+        }
+
+        .trivia-deck .deck-title {
+            color: #ff69b4;
+            text-shadow:
+                0 0 20px rgba(255, 105, 180, 0.8),
+                0 0 40px rgba(255, 105, 180, 0.4);
+        }
+
+        .draw-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.6) 0%, rgba(255, 20, 147, 0.6) 100%);
+            border: 3px solid #ff69b4;
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 8px 25px rgba(255, 105, 180, 0.5),
+                0 0 40px rgba(255, 105, 180, 0.3);
+        }
+
+        .draw-button:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                0 15px 40px rgba(255, 105, 180, 0.7),
+                0 0 60px rgba(255, 105, 180, 0.5);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.9) 0%, rgba(255, 20, 147, 0.9) 100%);
+        }
+
+        /* Card Display */
+        .card-container {
+            flex: 1;
+            perspective: 1500px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, rgba(26, 6, 18, 0.95) 0%, rgba(45, 10, 31, 0.95) 100%);
+            border: 3px solid rgba(255, 105, 180, 0.6);
+            display: flex;
+            flex-direction: column-reverse;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(255, 105, 180, 0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 340px;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .card-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to top, rgba(26, 6, 18, 1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .card-body {
+            padding: 25px 25px 15px 25px;
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            width: fit-content;
+            background: rgba(244, 63, 94, 0.3);
+            border: 1px solid rgba(244, 63, 94, 0.6);
+            color: #f43f5e;
+        }
+
+        .trivia-badge {
+            background: rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            color: #3b82f6;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #f8e5e5;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            line-height: 1.3;
+        }
+
+        .card-content {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: rgba(248, 229, 229, 0.9);
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        .card-meta {
+            padding-top: 15px;
+            border-top: 1px solid rgba(244, 63, 94, 0.3);
+            font-size: 0.9rem;
+            color: rgba(248, 229, 229, 0.7);
+            font-style: italic;
+        }
+
+        .card-back {
+            background:
+                radial-gradient(circle at 30% 40%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(255, 20, 147, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(45, 10, 31, 0.98) 0%, rgba(26, 6, 18, 0.98) 100%);
+            border: 3px solid #ff69b4;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            box-shadow: inset 0 0 80px rgba(255, 105, 180, 0.2);
+        }
+
+        .trivia-deck .card-back {
+            border-color: rgba(255, 105, 180, 0.6);
+        }
+
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 105, 180, 0.1) 20px, rgba(255, 105, 180, 0.1) 40px),
+                repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255, 105, 180, 0.1) 20px, rgba(255, 105, 180, 0.1) 40px);
+        }
+
+        .card-back-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-back-content::before {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border: 3px solid rgba(255, 105, 180, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .card-back-content::after {
+            content: '';
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border: 2px solid rgba(255, 105, 180, 0.2);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .back-icon {
+            font-size: 7rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 35px rgba(255, 105, 180, 1));
+            position: relative;
+            z-index: 1;
+        }
+
+        .trivia-deck .back-icon {
+            filter: drop-shadow(0 0 35px rgba(255, 105, 180, 1));
+        }
+
+        .back-text {
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #ff69b4;
+            font-weight: bold;
+            text-shadow:
+                0 0 20px rgba(255, 105, 180, 0.9),
+                0 0 40px rgba(255, 105, 180, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .trivia-deck .back-text {
+            color: #ff69b4;
+            text-shadow:
+                0 0 20px rgba(255, 105, 180, 0.9),
+                0 0 40px rgba(255, 105, 180, 0.5);
+        }
+
+        /* Winner Modal */
+        .winner-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .winner-modal.show {
+            display: flex;
+        }
+
+        .winner-content {
+            background: linear-gradient(135deg, #1a0612 0%, #2d0a1f 100%);
+            border: 4px solid #ff69b4;
+            border-radius: 30px;
+            padding: 60px 50px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 0 100px rgba(255, 105, 180, 0.8);
+        }
+
+        .winner-icon {
+            font-size: 6rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 30px rgba(255, 105, 180, 1));
+        }
+
+        .winner-title {
+            font-size: 3.5rem;
+            color: #ff69b4;
+            margin-bottom: 30px;
+            letter-spacing: 4px;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
+        }
+
+        .winner-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .reset-btn {
+            padding: 20px 60px;
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+            border: none;
+            color: white;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 35px rgba(255, 105, 180, 0.5);
+            font-weight: bold;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.7);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .decks-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .game-info {
+                grid-template-columns: 1fr;
+            }
+
+            .scoreboard {
+                flex-direction: column;
+            }
+
+            .card-image {
+                height: 260px;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-content {
+                font-size: 0.95rem;
+            }
+
+            .winner-title {
+                font-size: 2.5rem;
+            }
+
+            .winner-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        .flip-hint {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(248, 229, 229, 0.6);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge">🔥 Digital Foreplay Card Deck</div>
+            <h1>EXPOSED</h1>
+            <p class="subtitle">An Erotic Trivia & Sensual Forfeits Game for Couples</p>
+        </div>
+
+        <div class="game-info">
+            <div class="scoreboard">
+                <div class="player-card">
+                    <div class="player-name">Player 1</div>
+                    <div class="score-display" id="score1">0</div>
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="updateScore(1, 1)">+</button>
+                        <button class="score-btn" onclick="updateScore(1, -1)">−</button>
+                    </div>
+                    <div class="strip-counter">
+                        <div class="strip-label">Clothing Items</div>
+                        <div class="strip-items" id="strip1">
+                            <div class="strip-item" onclick="toggleStrip(1, 0)">Socks</div>
+                            <div class="strip-item" onclick="toggleStrip(1, 1)">Shirt</div>
+                            <div class="strip-item" onclick="toggleStrip(1, 2)">Pants</div>
+                            <div class="strip-item" onclick="toggleStrip(1, 3)">Underwear</div>
+                            <div class="strip-item" onclick="toggleStrip(1, 4)">Bra</div>
+                            <div class="strip-item" onclick="toggleStrip(1, 5)">Belt</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-card">
+                    <div class="player-name">Player 2</div>
+                    <div class="score-display" id="score2">0</div>
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="updateScore(2, 1)">+</button>
+                        <button class="score-btn" onclick="updateScore(2, -1)">−</button>
+                    </div>
+                    <div class="strip-counter">
+                        <div class="strip-label">Clothing Items</div>
+                        <div class="strip-items" id="strip2">
+                            <div class="strip-item" onclick="toggleStrip(2, 0)">Socks</div>
+                            <div class="strip-item" onclick="toggleStrip(2, 1)">Shirt</div>
+                            <div class="strip-item" onclick="toggleStrip(2, 2)">Pants</div>
+                            <div class="strip-item" onclick="toggleStrip(2, 3)">Underwear</div>
+                            <div class="strip-item" onclick="toggleStrip(2, 4)">Tank</div>
+                            <div class="strip-item" onclick="toggleStrip(2, 5)">Belt</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="decks-container">
+            <!-- Trivia Deck -->
+            <div class="deck-area trivia-deck">
+                <div class="deck-background"></div>
+                <div class="deck-content">
+                    <div class="deck-header">
+                        <div class="deck-title">Trivia Deck</div>
+                    </div>
+                    <button class="draw-button" onclick="drawTriviaCard()">🎴 Draw Question</button>
+                    <div class="card-container">
+                        <div class="card-inner" id="triviaCard" onclick="flipCard('trivia')">
+                            <div class="card-face card-front">
+                                <div class="card-image" id="triviaImage">
+                                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff69b4;stop-opacity:0.3"/><stop offset="100%" style="stop-color:#ff1493;stop-opacity:0.5"/></linearGradient></defs><ellipse cx="200" cy="150" rx="150" ry="120" fill="url(#g1)"/><text x="200" y="160" font-size="60" fill="#ff69b4" text-anchor="middle" font-family="Arial">💋</text></svg>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-badge trivia-badge">Trivia Question</div>
+                                    <div class="card-title" id="triviaTitle">Draw a card to begin</div>
+                                    <div class="card-content" id="triviaContent">Click "Draw Question" above to start the game and test your intimacy knowledge</div>
+                                    <div class="card-meta" id="triviaMeta"></div>
+                                </div>
+                            </div>
+                            <div class="card-face card-back">
+                                <div class="card-back-content">
+                                    <div class="back-icon">❓</div>
+                                    <div class="back-text">Trivia</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Penalty Deck -->
+            <div class="deck-area penalty-deck">
+                <div class="deck-background"></div>
+                <div class="deck-content">
+                    <div class="deck-header">
+                        <div class="deck-title">Penalty Deck</div>
+                    </div>
+                    <button class="draw-button" onclick="drawPenaltyCard()">💋 Draw Penalty</button>
+                    <div class="card-container">
+                        <div class="card-inner" id="penaltyCard" onclick="flipCard('penalty')">
+                            <div class="card-face card-front">
+                                <div class="card-image" id="penaltyImage">
+                                    <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ff1493;stop-opacity:0.4"/><stop offset="100%" style="stop-color:#dc143c;stop-opacity:0.6"/></linearGradient></defs><ellipse cx="200" cy="150" rx="150" ry="120" fill="url(#g4)"/><text x="200" y="160" font-size="60" fill="#ff1493" text-anchor="middle" font-family="Arial">🔥</text></svg>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-badge">Sensual Forfeit</div>
+                                    <div class="card-title" id="penaltyTitle">Draw a penalty card</div>
+                                    <div class="card-content" id="penaltyContent">If you get the trivia question wrong, draw a penalty and face the sensual consequences</div>
+                                    <div class="card-meta" id="penaltyMeta"></div>
+                                </div>
+                            </div>
+                            <div class="card-face card-back">
+                                <div class="card-back-content">
+                                    <div class="back-icon">🔥</div>
+                                    <div class="back-text">Penalty</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="flip-hint">💡 Tap each card to flip and see the decorative back</p>
+    </div>
+
+    <div class="winner-modal" id="winnerModal">
+        <div class="winner-content">
+            <div class="winner-icon">👑</div>
+            <div class="winner-title" id="winnerTitle">PLAYER WINS!</div>
+            <div class="winner-text">The winner claims control and decides tonight's adventure...</div>
+            <button class="reset-btn" onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        let scores = { 1: 0, 2: 0 };
+        let isTriviaFlipped = false;
+        let isPenaltyFlipped = false;
+        let usedTriviaCards = [];
+        let usedPenaltyCards = [];
+
+        // Trivia Cards
+        const triviaCards = [
+            { title: "The Neck Question", question: "Where on my neck do I love being kissed the most - left side, right side, or back?", meta: "One answer only!" },
+            { title: "Morning Person", question: "True or False: I prefer morning intimacy over nighttime.", meta: "Partner reveals answer" },
+            { title: "Secret Fantasy", question: "Have I ever fantasized about having sex in a public place?", meta: "Yes or No" },
+            { title: "Romantic Gesture", question: "What's my favorite romantic gesture - flowers, love notes, or surprise dates?", meta: "Pick one!" },
+            { title: "Physical Touch", question: "Do I prefer gentle touches or firmer grips during intimacy?", meta: "Choose one" },
+            { title: "Bedroom Tempo", question: "True or False: I prefer slow and sensual over fast and passionate.", meta: "Partner decides" },
+            { title: "The Playlist", question: "Would I rather make love with music or in complete silence?", meta: "Music or Silence?" },
+            { title: "Sweet Spot", question: "What body part of mine is the most sensitive - ears, neck, or inner thighs?", meta: "One choice only" },
+            { title: "Eye Contact", question: "True or False: I love maintaining eye contact during intimate moments.", meta: "Yes or No" },
+            { title: "Shower Time", question: "Have I ever thought about shower sex with you?", meta: "Be honest!" },
+            { title: "Roleplay Ready", question: "Would I be open to trying roleplay in the bedroom?", meta: "Yes or No" },
+            { title: "The First Time", question: "Do I remember what you wore on our first intimate night together?", meta: "Test my memory" },
+            { title: "Dominant or Submissive", question: "Do I prefer being dominant or submissive in bed?", meta: "Pick one" },
+            { title: "Sweet Talk", question: "True or False: Dirty talk turns me on more than romantic whispers.", meta: "Partner guesses" },
+            { title: "Massage Master", question: "What body part do I want massaged most - shoulders, back, or feet?", meta: "One answer" },
+            { title: "Temperature Play", question: "Would I enjoy temperature play with ice or warm oil?", meta: "Ice or Oil?" },
+            { title: "Light or Dark", question: "Do I prefer making love with the lights on or off?", meta: "Choose one" },
+            { title: "Favorite Position", question: "True or False: You know my favorite intimate position.", meta: "Prove it!" },
+            { title: "Spontaneous or Planned", question: "Do I prefer spontaneous intimacy or planned romantic evenings?", meta: "One or the other" },
+            { title: "Public Display", question: "Am I comfortable with PDA (public displays of affection)?", meta: "Yes or No" },
+            { title: "Compliment Type", question: "What compliment turns me on most - physical, emotional, or intellectual?", meta: "Pick one!" },
+            { title: "Bedroom Soundtrack", question: "True or False: I have a secret sex playlist.", meta: "Guess correctly" },
+            { title: "Kissing Style", question: "Do I prefer soft gentle kisses or deep passionate ones?", meta: "Soft or Deep?" },
+            { title: "Ticklish Zones", question: "Am I ticklish on my sides, feet, or not ticklish at all?", meta: "Choose wisely" },
+            { title: "Sensory Preference", question: "What sense heightens my arousal most - touch, sound, or smell?", meta: "One sense only" },
+            { title: "Cuddling Style", question: "True or False: I'm a big spoon who loves to hold you.", meta: "Spoon preference" },
+            { title: "Weekend Plans", question: "Would I rather spend a weekend in bed with you or on an adventure?", meta: "Bed or Adventure?" },
+            { title: "Love Language", question: "Is my love language physical touch, words of affirmation, or quality time?", meta: "Pick one!" },
+            { title: "Bath Time", question: "Have I fantasized about taking a sensual bath together?", meta: "Yes or No" },
+            { title: "Scent Turn On", question: "What scent on you turns me on most - cologne, natural smell, or fresh soap?", meta: "Pick one!" },
+            { title: "First Move", question: "True or False: I love it when you make the first move.", meta: "Who initiates?" },
+            { title: "Breakfast in Bed", question: "Would I prefer breakfast in bed or morning intimacy first?", meta: "Food or Fun?" },
+            { title: "Hair Pulling", question: "Do I like having my hair gently pulled during passionate moments?", meta: "Yes or No" },
+            { title: "Lingerie Opinion", question: "True or False: I think lingerie makes intimacy more exciting.", meta: "Partner guesses" },
+            { title: "Secret Desire", question: "Have I told you my deepest intimate fantasy yet?", meta: "Have I shared?" },
+            { title: "Body Worship", question: "What part of your body do I find most attractive - eyes, hands, or smile?", meta: "One choice" },
+            { title: "Moonlight Magic", question: "Would I enjoy making love under the stars or moonlight?", meta: "Yes or No" },
+            { title: "Surprise Factor", question: "True or False: I love being surprised with spontaneous intimacy.", meta: "Surprise me?" },
+            { title: "Favorite Time", question: "What's my favorite time for intimacy - morning, afternoon, or night?", meta: "Time of day" },
+            { title: "Silky Smooth", question: "Do I prefer silk sheets or regular cotton for intimate moments?", meta: "Silk or Cotton?" },
+            { title: "Naughty or Nice", question: "True or False: I have a naughty side you haven't fully discovered yet.", meta: "More to explore?" },
+            { title: "Pillow Talk", question: "Do I enjoy deep conversations before or after intimacy?", meta: "Before or After?" },
+            { title: "Weekend Away", question: "Would I rather have a romantic weekend getaway or a staycation in bed?", meta: "Away or Home?" },
+            { title: "Physical Compliments", question: "True or False: Physical compliments during sex turn me on.", meta: "Words matter?" },
+            { title: "Ultimate Turn On", question: "What's my biggest turn-on - confidence, humor, or tenderness?", meta: "Choose one quality" }
+        ];
+
+        // Penalty Cards
+        const penaltyCards = [
+            { title: "The Ice Trail", description: "Place an ice cube in your mouth and slowly trace it from their neck down to their navel.", meta: "🧊 Until ice melts" },
+            { title: "Blindfold Tease", description: "Blindfold them and use your fingertips to explore every inch of their body for 2 minutes.", meta: "😈 No peeking allowed" },
+            { title: "Sensual Massage", description: "Give them a 3-minute full-body massage with oil, focusing on their most tense areas.", meta: "💆 Clothing optional" },
+            { title: "Whispered Fantasies", description: "Whisper your deepest fantasy into their ear in explicit detail.", meta: "🔥 Be specific" },
+            { title: "The Silk Touch", description: "Use a silk scarf or soft fabric to caress their skin everywhere except their most sensitive areas.", meta: "⏱️ 90 seconds" },
+            { title: "Champagne Kiss", description: "Take a sip of champagne (or any drink) and kiss them passionately without swallowing.", meta: "🍾 Share the taste" },
+            { title: "Strip Lap Dance", description: "Give them a sensual lap dance while slowly removing one piece of your clothing.", meta: "💃 Music recommended" },
+            { title: "Body Paint", description: "Use your finger to 'draw' invisible words on their back. They must guess what you wrote.", meta: "✍️ Write 'I want you'" },
+            { title: "Mirror Mirror", description: "Stand in front of a mirror together and explore each other while maintaining eye contact through the reflection.", meta: "🪞 Watch yourselves" },
+            { title: "Frozen Grapes", description: "Feed them frozen grapes one by one, but only using your mouth.", meta: "🍇 No hands" },
+            { title: "The Countdown", description: "Kiss every part of their body counting down from 10 to 1, ending at their choice.", meta: "⏰ Take your time" },
+            { title: "Temperature Play", description: "Alternate between a warm touch (breath or warm cloth) and a cold touch (ice) on their skin.", meta: "🌡️ Hot and cold" },
+            { title: "Honey Drizzle", description: "Drizzle honey on their neck or collarbone and slowly lick it off.", meta: "🍯 Sweet and sticky" },
+            { title: "60 Second Stare", description: "Stare into each other's eyes without speaking, blinking, or touching for 60 seconds.", meta: "👁️ No breaking!" },
+            { title: "Clothing Swap", description: "Swap one piece of clothing with them and keep it on for the rest of the game.", meta: "👕 Get creative" },
+            { title: "Feather Touch", description: "Use a feather (or your fingertips as light as possible) to tickle and tease them for 2 minutes.", meta: "🪶 Barely there" },
+            { title: "The Elevator", description: "Kiss them starting from their ankles and slowly work your way up, stopping wherever they say.", meta: "⬆️ Going up" },
+            { title: "Breath Play", description: "Breathe hot air on their neck, ears, and down their spine without actually touching them.", meta: "😮‍💨 Anticipation" },
+            { title: "Chocolate Temptation", description: "Feed them a piece of chocolate, but take a bite first and pass it mouth-to-mouth.", meta: "🍫 Share it" },
+            { title: "Dance of Seduction", description: "Slow dance with them for one full song, getting progressively closer and more intimate.", meta: "💕 Feel the rhythm" },
+            { title: "Secret Spot", description: "Reveal a secret erogenous zone on your body they might not know about, then let them explore it.", meta: "🤫 Show and tell" },
+            { title: "Spanking Session", description: "Give them 5 playful spanks while they're bent over. They rate each one from 1-10.", meta: "👋 Playful only" },
+            { title: "Oil Exploration", description: "Pour massage oil in your hands and explore their body without using traditional massage strokes.", meta: "🛢️ Get creative" },
+            { title: "The French Kiss", description: "Make out for 2 full minutes like it's your first kiss all over again.", meta: "💋 No breaks" },
+            { title: "Strawberry Seduction", description: "Hold a strawberry in your mouth and let them take bites until it's gone.", meta: "🍓 Share the fruit" },
+            { title: "Strip Poker", description: "Play one hand of rock-paper-scissors. Loser removes one clothing item.", meta: "🎲 Quick round" },
+            { title: "Nibble Trail", description: "Gently nibble from their earlobe down to their shoulder.", meta: "😋 Soft bites only" },
+            { title: "Body Shot", description: "They lie down, you pour a shot on their stomach and drink it without using hands.", meta: "🥃 Lick it up" },
+            { title: "Pillow Talk", description: "Share your hottest sexual fantasy about them in graphic detail.", meta: "🗣️ Be explicit" },
+            { title: "The Tease", description: "Kiss everywhere except their lips for 90 seconds, no matter how much they want it.", meta: "😏 Resist temptation" },
+            { title: "Candle Wax", description: "Light a massage candle and drip warm wax on their back or chest (ensure it's body-safe).", meta: "🕯️ Safety first" },
+            { title: "Erotic Reading", description: "Read a sexy passage from a book or your phone to them in your most seductive voice.", meta: "📖 Set the mood" },
+            { title: "Under Pressure", description: "Pin their hands above their head and kiss them passionately for 30 seconds.", meta: "🔒 Hold them down" },
+            { title: "Mirror Confessions", description: "Stand behind them at a mirror and whisper all the things you want to do to them.", meta: "🪞 Watch their reaction" },
+            { title: "The Unwrap", description: "Slowly remove one piece of their clothing using only your teeth.", meta: "👄 No hands allowed" },
+            { title: "Perfume Points", description: "Apply perfume/cologne to your pulse points and have them find and kiss each one.", meta: "👃 Follow the scent" },
+            { title: "Sexy Countdown", description: "Count down from 30 while teasing them. At zero, give them exactly what they want.", meta: "⏱️ Anticipation builds" },
+            { title: "The Photographer", description: "Pose them in a sexy position and pretend to take photos, complimenting them the whole time.", meta: "📸 Make them feel desired" },
+            { title: "Restraint Test", description: "They must keep their hands behind their back while you kiss and touch them for 60 seconds.", meta: "🚫 No touching back" },
+            { title: "Sweet Nothings", description: "Whisper 5 things you love about their body directly into their ear.", meta: "💬 Compliment them" },
+            { title: "Dessert Time", description: "Lick whipped cream, chocolate syrup, or ice cream off a body part of your choice.", meta: "🍨 Tasty treat" },
+            { title: "The Reveal", description: "Tell them about a time you were thinking about them in a naughty way when you shouldn't have been.", meta: "😳 Be honest" },
+            { title: "Neck Attack", description: "Spend 60 seconds kissing, licking, and gently biting their neck.", meta: "🧛 Vampire mode" },
+            { title: "Heat Wave", description: "Breathe warm air on their skin while running your hands over their body.", meta: "🔥 Warm them up" },
+            { title: "The Challenge", description: "Try to make them moan using only neck kisses. You have 90 seconds.", meta: "🎯 Make them react" }
+        ];
+
+        // Real photos from Unsplash - artistic sensual women
+        const triviaIllustrations = [
+            `<img src="https://images.unsplash.com/photo-1565014208903-fdfd6c464221?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1592390140955-b250e159744a?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1612216747481-eeac369299c0?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1550871685-92364adac4f1?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1493321384838-70c5a85ba487?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`
+        ];
+
+        const penaltyIllustrations = [
+            `<img src="https://images.unsplash.com/photo-1662874611956-faf2b7fa237a?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1535389351109-7f656ed55699?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1671043074053-65565e0f7c3c?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1679584097242-a75e3dc22da2?w=800&h=1000&fit=crop" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`,
+            `<img src="https://images.unsplash.com/photo-1565014208903-fdfd6c464221?w=800&h=1000&fit=crop&sat=-100" style="width:100%;height:100%;object-fit:cover;" alt="sensual" />`
+        ];
+
+        // Remove all the SVG code below
+        /*
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Flowing hair down back -->
+                    <path d="M 130 50 Q 110 40 120 30 Q 140 20 150 25 Q 170 20 180 30 Q 190 40 170 50 Q 165 80 155 110 L 145 110 Q 135 80 130 50 Z" stroke-width="3"/>
+                    <path d="M 120 60 Q 115 95 120 130" stroke-width="2"/>
+                    <path d="M 180 60 Q 185 95 180 130" stroke-width="2"/>
+                    <!-- Back curves -->
+                    <path d="M 130 120 Q 110 160 105 200 Q 100 250 110 300" stroke-width="4"/>
+                    <path d="M 170 120 Q 190 160 195 200 Q 200 250 190 300" stroke-width="4"/>
+                    <!-- Spine line -->
+                    <path d="M 150 115 Q 148 180 150 250 Q 152 300 150 350" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Shoulder blades -->
+                    <ellipse cx="130" cy="150" rx="25" ry="35" stroke-width="2.5"/>
+                    <ellipse cx="170" cy="150" rx="25" ry="35" stroke-width="2.5"/>
+                    <!-- Lower back curve -->
+                    <path d="M 110 280 Q 120 300 130 315 Q 140 325 150 330 Q 160 325 170 315 Q 180 300 190 280" stroke-width="3"/>
+                    <!-- Hips -->
+                    <path d="M 105 305 Q 90 330 85 360" stroke-width="5"/>
+                    <path d="M 195 305 Q 210 330 215 360" stroke-width="5"/>
+                    <!-- Buttocks outline -->
+                    <ellipse cx="125" cy="340" rx="35" ry="45" stroke-width="3"/>
+                    <ellipse cx="175" cy="340" rx="35" ry="45" stroke-width="3"/>
+                    <!-- Sitting position suggestion -->
+                    <path d="M 100 380 L 200 380" stroke-width="2" opacity="0.5"/>
+                    <!-- Hatching for shading -->
+                    <path d="M 120 290 L 130 310 M 125 292 L 135 312 M 130 294 L 140 314" opacity="0.3"/>
+                    <path d="M 170 290 L 180 310 M 165 292 L 175 312 M 160 294 L 170 314" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Sketch 2: Reclining figure
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair spread out -->
+                    <path d="M 100 80 Q 80 70 90 60 Q 120 50 150 55 Q 180 50 210 60 Q 220 70 200 80" stroke-width="3"/>
+                    <!-- Face outline -->
+                    <ellipse cx="150" cy="85" rx="35" ry="40" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 135 122 L 130 145" stroke-width="4"/>
+                    <path d="M 165 122 L 170 145" stroke-width="4"/>
+                    <!-- Reclining torso -->
+                    <path d="M 125 150 Q 110 180 100 220 Q 95 260 100 300" stroke-width="5"/>
+                    <path d="M 175 150 Q 190 180 200 220 Q 205 260 200 300" stroke-width="5"/>
+                    <!-- Breasts -->
+                    <ellipse cx="125" cy="180" rx="28" ry="35" stroke-width="2.5"/>
+                    <ellipse cx="175" cy="180" rx="28" ry="35" stroke-width="2.5"/>
+                    <!-- Waist curve -->
+                    <path d="M 110 230 Q 135 240 150 242 Q 165 240 190 230" stroke-width="2"/>
+                    <!-- Hips -->
+                    <ellipse cx="120" cy="280" rx="40" ry="50" stroke-width="3"/>
+                    <ellipse cx="180" cy="280" rx="40" ry="50" stroke-width="3"/>
+                    <!-- Legs suggestion -->
+                    <path d="M 110 325 Q 100 365 95 410" stroke-width="5"/>
+                    <path d="M 190 325 Q 205 370 215 415" stroke-width="5"/>
+                    <!-- Arm -->
+                    <path d="M 110 160 Q 85 175 70 195 L 60 220" stroke-width="4"/>
+                    <!-- Shading strokes -->
+                    <path d="M 115 255 L 125 275 M 120 257 L 130 277 M 125 259 L 135 279" opacity="0.3"/>
+                    <path d="M 175 255 L 185 275 M 170 257 L 180 277 M 165 259 L 175 279" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Sketch 3: Standing with hand on hip
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair -->
+                    <path d="M 120 45 Q 100 30 115 20 Q 140 10 150 15 Q 165 10 180 20 Q 195 30 175 45 Q 170 65 160 85 L 140 85 Q 130 65 125 45 Z" stroke-width="3"/>
+                    <!-- Face -->
+                    <ellipse cx="150" cy="70" rx="32" ry="38" stroke-width="2"/>
+                    <!-- Neck and shoulders -->
+                    <path d="M 133 105 L 130 130" stroke-width="4"/>
+                    <path d="M 167 105 L 170 130" stroke-width="4"/>
+                    <path d="M 120 135 Q 110 145 100 160" stroke-width="3.5"/>
+                    <path d="M 180 135 Q 190 145 200 160" stroke-width="3.5"/>
+                    <!-- Breasts -->
+                    <ellipse cx="130" cy="170" rx="26" ry="32" stroke-width="2.5"/>
+                    <ellipse cx="170" cy="170" rx="26" ry="32" stroke-width="2.5"/>
+                    <!-- Torso -->
+                    <path d="M 110 200 Q 105 240 110 280" stroke-width="5"/>
+                    <path d="M 190 200 Q 195 240 190 280" stroke-width="5"/>
+                    <!-- Waist curve -->
+                    <path d="M 112 260 Q 140 265 150 266 Q 160 265 188 260" stroke-width="2"/>
+                    <!-- Hips -->
+                    <ellipse cx="125" cy="305" rx="35" ry="45" stroke-width="3"/>
+                    <ellipse cx="175" cy="305" rx="35" ry="45" stroke-width="3"/>
+                    <!-- Legs -->
+                    <path d="M 115 345 L 110 420" stroke-width="5"/>
+                    <path d="M 185 345 L 195 420" stroke-width="5"/>
+                    <!-- Arm on hip -->
+                    <path d="M 95 165 Q 85 200 85 235 L 92 260" stroke-width="4"/>
+                    <ellipse cx="88" cy="270" rx="12" ry="16" stroke-width="2"/>
+                    <!-- Other arm down -->
+                    <path d="M 205 165 Q 215 210 220 260" stroke-width="4"/>
+                    <!-- Shading -->
+                    <path d="M 120 285 L 130 305 M 125 287 L 135 307" opacity="0.3"/>
+                    <path d="M 170 285 L 180 305 M 165 287 L 175 307" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Sketch 4: Side profile seated
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair profile -->
+                    <path d="M 140 50 Q 120 35 130 25 Q 145 18 155 20 Q 170 18 180 28 Q 185 45 175 65 Q 170 85 165 105" stroke-width="3"/>
+                    <!-- Face profile -->
+                    <path d="M 160 60 Q 175 65 178 75 Q 180 85 175 95 Q 170 105 160 108" stroke-width="2"/>
+                    <!-- Nose -->
+                    <path d="M 175 75 Q 180 78 178 82" stroke-width="1.5"/>
+                    <!-- Neck -->
+                    <path d="M 160 108 L 155 135" stroke-width="4"/>
+                    <!-- Back curve -->
+                    <path d="M 150 140 Q 135 170 125 210 Q 120 260 130 305" stroke-width="5"/>
+                    <!-- Front curve (breast) -->
+                    <ellipse cx="165" cy="175" rx="30" ry="38" stroke-width="2.5"/>
+                    <!-- Waist -->
+                    <path d="M 158 210 Q 150 230 148 250" stroke-width="3"/>
+                    <!-- Hip -->
+                    <ellipse cx="145" cy="290" rx="38" ry="48" stroke-width="3"/>
+                    <!-- Seated leg bent -->
+                    <path d="M 130 330 Q 115 355 105 380 Q 98 400 95 420" stroke-width="5"/>
+                    <!-- Thigh -->
+                    <ellipse cx="122" cy="355" rx="32" ry="40" stroke-width="2.5" transform="rotate(-30 122 355)"/>
+                    <!-- Arm -->
+                    <path d="M 155 145 Q 175 160 185 180 L 195 210" stroke-width="4"/>
+                    <!-- Shading strokes -->
+                    <path d="M 135 270 L 145 290 M 140 272 L 150 292 M 145 274 L 155 294" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Sketch 5: Stretching pose
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair up -->
+                    <ellipse cx="150" cy="55" rx="38" ry="35" stroke-width="3"/>
+                    <path d="M 120 50 Q 110 45 115 40" stroke-width="2"/>
+                    <path d="M 180 50 Q 190 45 185 40" stroke-width="2"/>
+                    <!-- Face -->
+                    <ellipse cx="150" cy="75" rx="30" ry="36" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 135 108 L 133 135" stroke-width="4"/>
+                    <path d="M 165 108 L 167 135" stroke-width="4"/>
+                    <!-- Arms raised -->
+                    <path d="M 125 140 Q 105 125 90 115 L 75 105" stroke-width="4"/>
+                    <path d="M 175 140 Q 195 125 210 115 L 225 105" stroke-width="4"/>
+                    <!-- Torso elongated -->
+                    <path d="M 130 145 Q 120 185 118 230 Q 115 280 120 320" stroke-width="5"/>
+                    <path d="M 170 145 Q 180 185 182 230 Q 185 280 180 320" stroke-width="5"/>
+                    <!-- Breasts -->
+                    <ellipse cx="132" cy="175" rx="24" ry="30" stroke-width="2.5"/>
+                    <ellipse cx="168" cy="175" rx="24" ry="30" stroke-width="2.5"/>
+                    <!-- Waist -->
+                    <path d="M 120 250 Q 140 255 150 256 Q 160 255 180 250" stroke-width="2"/>
+                    <!-- Hips -->
+                    <ellipse cx="130" cy="330" rx="32" ry="42" stroke-width="3"/>
+                    <ellipse cx="170" cy="330" rx="32" ry="42" stroke-width="3"/>
+                    <!-- Legs -->
+                    <path d="M 120 368 L 115 425" stroke-width="5"/>
+                    <path d="M 180 368 L 188 425" stroke-width="5"/>
+                    <!-- Ribcage lines -->
+                    <path d="M 125 195 Q 145 198 150 198 Q 155 198 175 195" opacity="0.4" stroke-width="1"/>
+                    <path d="M 127 210 Q 145 213 150 213 Q 155 213 173 210" opacity="0.4" stroke-width="1"/>
+                    <!-- Shading -->
+                    <path d="M 125 305 L 135 325 M 130 307 L 140 327" opacity="0.3"/>
+                    <path d="M 165 305 L 175 325 M 160 307 L 170 327" opacity="0.3"/>
+                </g>
+            </svg>`
+        ];
+
+        const penaltyIllustrations = [
+            // Penalty Sketch 1: Kneeling pose
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair -->
+                    <path d="M 115 48 Q 95 35 108 25 Q 135 15 150 18 Q 168 15 185 25 Q 198 35 178 48 Q 172 75 165 100 L 135 100 Q 128 75 122 48 Z" stroke-width="3"/>
+                    <!-- Face looking up -->
+                    <ellipse cx="150" cy="75" rx="33" ry="40" stroke-width="2"/>
+                    <path d="M 138 85 Q 150 88 162 85" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Neck arched back -->
+                    <path d="M 135 112 Q 132 135 130 155" stroke-width="4"/>
+                    <path d="M 165 112 Q 168 135 170 155" stroke-width="4"/>
+                    <!-- Chest pushed forward -->
+                    <ellipse cx="128" cy="185" rx="30" ry="38" stroke-width="2.5"/>
+                    <ellipse cx="172" cy="185" rx="30" ry="38" stroke-width="2.5"/>
+                    <!-- Torso arched -->
+                    <path d="M 108 215 Q 100 260 105 305" stroke-width="5"/>
+                    <path d="M 192 215 Q 200 260 195 305" stroke-width="5"/>
+                    <!-- Hips -->
+                    <ellipse cx="125" cy="335" rx="38" ry="46" stroke-width="3"/>
+                    <ellipse cx="175" cy="335" rx="38" ry="46" stroke-width="3"/>
+                    <!-- Kneeling legs -->
+                    <path d="M 115 375 Q 105 395 100 415" stroke-width="5"/>
+                    <path d="M 185 375 Q 200 398 210 418" stroke-width="5"/>
+                    <!-- Arms back -->
+                    <path d="M 105 165 Q 85 185 75 215" stroke-width="4"/>
+                    <path d="M 195 165 Q 215 185 225 215" stroke-width="4"/>
+                    <!-- Shading -->
+                    <path d="M 115 310 L 125 330 M 120 312 L 130 332" opacity="0.3"/>
+                    <path d="M 175 310 L 185 330 M 170 312 L 180 332" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Penalty Sketch 2: Lying on back
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair spread -->
+                    <path d="M 90 75 Q 70 65 85 55 Q 120 45 150 50 Q 185 45 210 55 Q 225 65 205 75" stroke-width="3"/>
+                    <!-- Face -->
+                    <ellipse cx="150" cy="82" rx="36" ry="42" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 132 120 L 128 145" stroke-width="4"/>
+                    <path d="M 168 120 L 172 145" stroke-width="4"/>
+                    <!-- Lying torso -->
+                    <path d="M 120 150 Q 105 185 98 230 Q 95 280 100 325" stroke-width="5"/>
+                    <path d="M 180 150 Q 195 185 202 230 Q 205 280 200 325" stroke-width="5"/>
+                    <!-- Breasts -->
+                    <ellipse cx="122" cy="190" rx="32" ry="40" stroke-width="2.5"/>
+                    <ellipse cx="178" cy="190" rx="32" ry="40" stroke-width="2.5"/>
+                    <!-- Waist -->
+                    <path d="M 105 245 Q 135 252 150 253 Q 165 252 195 245" stroke-width="2"/>
+                    <!-- Hips -->
+                    <ellipse cx="115" cy="295" rx="42" ry="52" stroke-width="3"/>
+                    <ellipse cx="185" cy="295" rx="42" ry="52" stroke-width="3"/>
+                    <!-- Legs -->
+                    <path d="M 105 342 Q 95 380 88 425" stroke-width="5"/>
+                    <path d="M 195 342 Q 210 385 220 430" stroke-width="5"/>
+                    <!-- Arms out -->
+                    <path d="M 115 155 Q 90 170 70 190" stroke-width="4"/>
+                    <path d="M 185 155 Q 210 170 230 190" stroke-width="4"/>
+                    <!-- Shading -->
+                    <path d="M 110 270 L 120 290 M 115 272 L 125 292" opacity="0.3"/>
+                    <path d="M 180 270 L 190 290 M 175 272 L 185 292" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Penalty Sketch 3: Bent over
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair falling forward -->
+                    <path d="M 120 65 Q 100 50 112 40 Q 138 30 150 35 Q 165 30 180 40 Q 192 50 172 65 Q 168 95 160 125 L 140 125 Q 132 95 128 65 Z" stroke-width="3"/>
+                    <!-- Head bent down -->
+                    <ellipse cx="150" cy="90" rx="34" ry="40" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 135 127 L 130 150" stroke-width="4"/>
+                    <path d="M 165 127 L 170 150" stroke-width="4"/>
+                    <!-- Back bent -->
+                    <path d="M 125 155 Q 110 190 100 235" stroke-width="5"/>
+                    <path d="M 175 155 Q 190 190 200 235" stroke-width="5"/>
+                    <!-- Breasts hanging -->
+                    <ellipse cx="120" cy="200" rx="28" ry="36" stroke-width="2.5"/>
+                    <ellipse cx="180" cy="200" rx="28" ry="36" stroke-width="2.5"/>
+                    <!-- Lower back -->
+                    <path d="M 100 238 Q 98 275 105 310" stroke-width="4"/>
+                    <path d="M 200 238 Q 202 275 195 310" stroke-width="4"/>
+                    <!-- Hips raised -->
+                    <ellipse cx="115" cy="340" rx="40" ry="50" stroke-width="3"/>
+                    <ellipse cx="185" cy="340" rx="40" ry="50" stroke-width="3"/>
+                    <path d="M 85 330 Q 150 370 215 330" stroke-width="4"/>
+                    <!-- Legs straight -->
+                    <path d="M 108 385 L 100 435" stroke-width="5"/>
+                    <path d="M 192 385 L 205 435" stroke-width="5"/>
+                    <!-- Arms reaching down -->
+                    <path d="M 120 160 Q 105 195 95 235" stroke-width="4"/>
+                    <path d="M 180 160 Q 195 195 205 235" stroke-width="4"/>
+                    <!-- Shading -->
+                    <path d="M 105 320 L 115 340 M 110 322 L 120 342" opacity="0.3"/>
+                    <path d="M 185 320 L 195 340 M 180 322 L 190 342" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Penalty Sketch 4: On all fours
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair -->
+                    <path d="M 118 55 Q 98 40 110 30 Q 135 20 150 23 Q 168 20 183 30 Q 195 40 175 55 Q 170 80 163 105 L 137 105 Q 130 80 125 55 Z" stroke-width="3"/>
+                    <!-- Face -->
+                    <ellipse cx="150" cy="77" rx="32" ry="38" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 133 112 L 128 138" stroke-width="4"/>
+                    <path d="M 167 112 L 172 138" stroke-width="4"/>
+                    <!-- Back horizontal -->
+                    <path d="M 123 145 Q 110 165 100 190" stroke-width="5"/>
+                    <path d="M 177 145 Q 190 165 200 190" stroke-width="5"/>
+                    <!-- Spine -->
+                    <path d="M 150 140 Q 148 185 150 235 Q 152 285 150 325" stroke-width="1.5" opacity="0.5"/>
+                    <!-- Breasts hanging -->
+                    <ellipse cx="125" cy="195" rx="30" ry="38" stroke-width="2.5"/>
+                    <ellipse cx="175" cy="195" rx="30" ry="38" stroke-width="2.5"/>
+                    <!-- Torso to hips -->
+                    <path d="M 100 230 Q 95 275 100 315" stroke-width="5"/>
+                    <path d="M 200 230 Q 205 275 200 315" stroke-width="5"/>
+                    <!-- Hips/buttocks raised -->
+                    <ellipse cx="120" cy="345" rx="42" ry="52" stroke-width="3"/>
+                    <ellipse cx="180" cy="345" rx="42" ry="52" stroke-width="3"/>
+                    <path d="M 88 335 Q 150 380 212 335" stroke-width="4"/>
+                    <!-- Arms supporting -->
+                    <path d="M 118 150 Q 100 170 90 195 L 82 225" stroke-width="4"/>
+                    <path d="M 182 150 Q 200 170 210 195 L 218 225" stroke-width="4"/>
+                    <ellipse cx="82" cy="235" rx="12" ry="16" stroke-width="2"/>
+                    <ellipse cx="218" cy="235" rx="12" ry="16" stroke-width="2"/>
+                    <!-- Knees -->
+                    <path d="M 110 390 Q 105 405 102 420" stroke-width="5"/>
+                    <path d="M 190 390 Q 198 408 205 423" stroke-width="5"/>
+                    <!-- Shading -->
+                    <path d="M 110 330 L 120 350 M 115 332 L 125 352" opacity="0.3"/>
+                    <path d="M 180 330 L 190 350 M 175 332 L 185 352" opacity="0.3"/>
+                </g>
+            </svg>`,
+
+            // Penalty Sketch 5: Legs spread seated
+            `<svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#1a1a1a" stroke-width="2" fill="none" stroke-linecap="round">
+                    <!-- Hair -->
+                    <path d="M 117 50 Q 97 37 110 27 Q 135 17 150 20 Q 168 17 183 27 Q 196 37 176 50 Q 170 72 163 95 L 137 95 Q 130 72 124 50 Z" stroke-width="3"/>
+                    <!-- Face -->
+                    <ellipse cx="150" cy="70" rx="31" ry="37" stroke-width="2"/>
+                    <!-- Neck -->
+                    <path d="M 134 104 L 130 130" stroke-width="4"/>
+                    <path d="M 166 104 L 170 130" stroke-width="4"/>
+                    <!-- Shoulders -->
+                    <path d="M 120 135 Q 105 145 95 160" stroke-width="3.5"/>
+                    <path d="M 180 135 Q 195 145 205 160" stroke-width="3.5"/>
+                    <!-- Torso -->
+                    <path d="M 125 140 Q 115 180 110 225 Q 105 275 110 315" stroke-width="5"/>
+                    <path d="M 175 140 Q 185 180 190 225 Q 195 275 190 315" stroke-width="5"/>
+                    <!-- Breasts -->
+                    <ellipse cx="130" cy="175" rx="28" ry="35" stroke-width="2.5"/>
+                    <ellipse cx="170" cy="175" rx="28" ry="35" stroke-width="2.5"/>
+                    <!-- Waist -->
+                    <path d="M 113 245 Q 138 250 150 251 Q 162 250 187 245" stroke-width="2"/>
+                    <!-- Hips -->
+                    <ellipse cx="122" cy="330" rx="36" ry="45" stroke-width="3"/>
+                    <ellipse cx="178" cy="330" rx="36" ry="45" stroke-width="3"/>
+                    <!-- Legs spread -->
+                    <path d="M 112 370 Q 95 400 82 435" stroke-width="5"/>
+                    <path d="M 188 370 Q 210 405 225 440" stroke-width="5"/>
+                    <!-- Thighs -->
+                    <ellipse cx="102" cy="395" rx="28" ry="38" stroke-width="2.5" transform="rotate(-25 102 395)"/>
+                    <ellipse cx="198" cy="395" rx="28" ry="38" stroke-width="2.5" transform="rotate(25 198 395)"/>
+                    <!-- Arms -->
+                    <path d="M 92 165 Q 75 190 68 225" stroke-width="4"/>
+                    <path d="M 208 165 Q 225 190 232 225" stroke-width="4"/>
+                    <!-- Shading -->
+                    <path d="M 118 305 L 128 325 M 123 307 L 133 327" opacity="0.3"/>
+                    <path d="M 172 305 L 182 325 M 167 307 L 177 327" opacity="0.3"/>
+                </g>
+            </svg>`
+        ];
+
+        function updateScore(player, change) {
+            scores[player] = Math.max(0, scores[player] + change);
+            document.getElementById(`score${player}`).textContent = scores[player];
+
+            if (scores[player] >= 5) {
+                showWinner(player);
+            }
+        }
+
+        function showWinner(player) {
+            document.getElementById('winnerTitle').textContent = `PLAYER ${player} WINS!`;
+            document.getElementById('winnerModal').classList.add('show');
+        }
+
+        function resetGame() {
+            scores = { 1: 0, 2: 0 };
+            document.getElementById('score1').textContent = '0';
+            document.getElementById('score2').textContent = '0';
+            document.getElementById('winnerModal').classList.remove('show');
+
+            // Reset strip counters
+            document.querySelectorAll('.strip-item').forEach(item => {
+                item.classList.remove('removed');
+            });
+
+            // Reset card states
+            usedTriviaCards = [];
+            usedPenaltyCards = [];
+        }
+
+        function toggleStrip(player, itemIndex) {
+            const stripItems = document.getElementById(`strip${player}`).children;
+            stripItems[itemIndex].classList.toggle('removed');
+        }
+
+        function flipCard(deckType) {
+            const card = document.getElementById(`${deckType}Card`);
+            card.classList.toggle('flipped');
+
+            if (deckType === 'trivia') {
+                isTriviaFlipped = !isTriviaFlipped;
+            } else {
+                isPenaltyFlipped = !isPenaltyFlipped;
+            }
+        }
+
+        function getRandomIllustration(illustrations) {
+            return illustrations[Math.floor(Math.random() * illustrations.length)];
+        }
+
+        function drawTriviaCard() {
+            if (usedTriviaCards.length === triviaCards.length) {
+                usedTriviaCards = [];
+            }
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * triviaCards.length);
+            } while (usedTriviaCards.includes(randomIndex));
+            usedTriviaCards.push(randomIndex);
+            const card = triviaCards[randomIndex];
+            if (isTriviaFlipped) {
+                flipCard('trivia');
+            }
+            document.getElementById('triviaTitle').textContent = card.title;
+            document.getElementById('triviaContent').textContent = card.question;
+            document.getElementById('triviaMeta').textContent = card.meta;
+            const illustrationIndex = randomIndex % triviaIllustrations.length;
+            document.getElementById('triviaImage').innerHTML = triviaIllustrations[illustrationIndex];
+        }
+
+        function drawPenaltyCard() {
+            if (usedPenaltyCards.length === penaltyCards.length) {
+                usedPenaltyCards = [];
+            }
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * penaltyCards.length);
+            } while (usedPenaltyCards.includes(randomIndex));
+            usedPenaltyCards.push(randomIndex);
+            const card = penaltyCards[randomIndex];
+            if (isPenaltyFlipped) {
+                flipCard('penalty');
+            }
+            document.getElementById('penaltyTitle').textContent = card.title;
+            document.getElementById('penaltyContent').textContent = card.description;
+            document.getElementById('penaltyMeta').textContent = card.meta;
+            const illustrationIndex = randomIndex % penaltyIllustrations.length;
+            document.getElementById('penaltyImage').innerHTML = penaltyIllustrations[illustrationIndex];
+
+            // Clothing roulette - randomly select a non-removed item
+            clothingRoulette();
+        }
+
+        function clothingRoulette() {
+            // Clear any previous selections
+            document.querySelectorAll('.strip-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            // Randomly choose which player (1 or 2)
+            const player = Math.random() < 0.5 ? 1 : 2;
+            const stripItems = document.getElementById(`strip${player}`).children;
+
+            // Get non-removed items
+            const availableItems = [];
+            for (let i = 0; i < stripItems.length; i++) {
+                if (!stripItems[i].classList.contains('removed')) {
+                    availableItems.push(i);
+                }
+            }
+
+            // If there are items left, select one randomly
+            if (availableItems.length > 0) {
+                const randomItemIndex = availableItems[Math.floor(Math.random() * availableItems.length)];
+                stripItems[randomItemIndex].classList.add('selected');
+
+                // Keep it glowing for 3 seconds then fade
+                setTimeout(() => {
+                    stripItems[randomItemIndex].classList.remove('selected');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

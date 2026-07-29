@@ -702,7 +702,13 @@
     <div class="container">
         <div class="header">
             <div class="badge">🔥 Digital Foreplay Card Deck</div>
-            <button id="musicToggle" style="position: absolute; top: 20px; right: 20px; background: rgba(220, 20, 60, 0.6); border: 2px solid #dc143c; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(220, 20, 60, 0.9)'" onmouseout="this.style.background='rgba(220, 20, 60, 0.6)'">🎵 Play Music</button>
+            <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; align-items: center;">
+                <button id="musicToggle" style="background: rgba(220, 20, 60, 0.6); border: 2px solid #dc143c; color: #fff; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-size: 1rem; transition: all 0.3s;" onmouseover="this.style.background='rgba(220, 20, 60, 0.9)'" onmouseout="this.style.background='rgba(220, 20, 60, 0.6)'">🎵 Play Music</button>
+                <div style="display: flex; align-items: center; gap: 5px; background: rgba(10, 2, 8, 0.7); padding: 8px 12px; border-radius: 10px; border: 2px solid rgba(255, 105, 180, 0.4);">
+                    <span style="color: #ff69b4; font-size: 0.9rem;">🔊</span>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="70" style="width: 80px; cursor: pointer;">
+                </div>
+            </div>
             <h1>EXPOSED</h1>
             <p class="subtitle">Foreplay Trivia Game</p>
 
@@ -1139,7 +1145,16 @@
         // Music toggle with playlist
         const bgMusic = document.getElementById('bgMusic');
         const musicToggle = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
         let isPlaying = false;
+
+        // Set initial volume to 70%
+        bgMusic.volume = 0.7;
+
+        // Volume slider control
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value / 100;
+        });
 
         // Array of long sensual jazz/R&B instrumentals (each ~3-5 min, total 30+ min)
         const playlist = [
@@ -1160,7 +1175,32 @@
             currentTrack = (currentTrack + 1) % playlist.length;
             bgMusic.src = playlist[currentTrack];
             if (isPlaying) {
-                bgMusic.play().catch(e => console.log('Playback error:', e));
+                bgMusic.play().catch(e => {
+                    console.log('Playback error:', e);
+                    alert('Music playback stopped. Click Play Music again to resume.');
+                    isPlaying = false;
+                    musicToggle.textContent = '🎵 Play Music';
+                    musicToggle.style.background = 'rgba(220, 20, 60, 0.6)';
+                });
+            }
+        });
+
+        // Loading feedback
+        bgMusic.addEventListener('loadstart', function() {
+            console.log('Loading track ' + (currentTrack + 1) + '...');
+        });
+
+        bgMusic.addEventListener('canplay', function() {
+            console.log('Track ready to play');
+        });
+
+        bgMusic.addEventListener('error', function(e) {
+            console.log('Audio error:', e);
+            alert('Could not load music track. Trying next track...');
+            currentTrack = (currentTrack + 1) % playlist.length;
+            bgMusic.src = playlist[currentTrack];
+            if (isPlaying) {
+                bgMusic.play();
             }
         });
 
@@ -1174,14 +1214,17 @@
                 // Set first track if not already playing
                 if (!bgMusic.src || bgMusic.src === '') {
                     bgMusic.src = playlist[currentTrack];
+                    console.log('Loading track:', playlist[currentTrack]);
                 }
+
                 bgMusic.play().then(() => {
                     musicToggle.textContent = '🔇 Pause Music';
                     musicToggle.style.background = 'rgba(138, 43, 226, 0.6)';
                     isPlaying = true;
+                    console.log('Music playing at volume:', bgMusic.volume);
                 }).catch(e => {
                     console.log('Playback error:', e);
-                    alert('Unable to play music. Please check your browser settings.');
+                    alert('Unable to play music. Error: ' + e.message + '\nTry adjusting your browser settings or device volume.');
                 });
             }
         });

@@ -317,6 +317,20 @@
                 0 0 30px rgba(255, 105, 180, 0.3);
         }
 
+        .trivia-deck .card-front {
+            border-color: rgba(138, 43, 226, 0.6);
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(138, 43, 226, 0.3);
+        }
+
+        .penalty-deck .card-front {
+            border-color: rgba(220, 20, 60, 0.6);
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(220, 20, 60, 0.3);
+        }
+
         .card-image {
             width: 100%;
             height: 340px;
@@ -418,6 +432,19 @@
             box-shadow: inset 0 0 80px rgba(255, 105, 180, 0.2);
         }
 
+        .card-back::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
         .trivia-deck .card-back {
             border-color: rgba(255, 105, 180, 0.6);
         }
@@ -498,10 +525,28 @@
 
         .trivia-deck .card-back {
             border-color: rgba(138, 43, 226, 0.6);
+            background:
+                radial-gradient(circle at 30% 40%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(147, 112, 219, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(45, 10, 31, 0.98) 0%, rgba(26, 6, 18, 0.98) 100%);
+            box-shadow: inset 0 0 80px rgba(138, 43, 226, 0.2);
+        }
+
+        .trivia-deck .card-back::after {
+            background-image: url('https://images.unsplash.com/photo-1612216747481-eeac369299c0?w=800&h=1000&fit=crop');
         }
 
         .penalty-deck .card-back {
             border-color: rgba(220, 20, 60, 0.6);
+            background:
+                radial-gradient(circle at 30% 40%, rgba(220, 20, 60, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(178, 34, 34, 0.15) 0%, transparent 50%),
+                linear-gradient(135deg, rgba(45, 10, 31, 0.98) 0%, rgba(26, 6, 18, 0.98) 100%);
+            box-shadow: inset 0 0 80px rgba(220, 20, 60, 0.2);
+        }
+
+        .penalty-deck .card-back::after {
+            background-image: url('https://images.unsplash.com/photo-1565014208903-fdfd6c464221?w=800&h=1000&fit=crop');
         }
 
         .back-text {
@@ -654,12 +699,10 @@
             <p class="subtitle">An Erotic Trivia & Sensual Forfeits Game for Couples</p>
 
             <div style="max-width: 700px; margin: 20px auto; padding: 20px; background: rgba(10, 2, 8, 0.7); border: 2px solid rgba(255, 105, 180, 0.4); border-radius: 15px; text-align: left; font-size: 0.95rem; line-height: 1.6;">
-                <h3 style="color: #ff69b4; margin-bottom: 12px; text-align: center;">🎮 How to Play</h3>
+                <h3 style="color: #ff69b4; margin-bottom: 12px; text-align: center;">😉 How to Play</h3>
                 <p><strong>1.</strong> Players take turns drawing trivia questions about each other</p>
                 <p><strong>2.</strong> If you answer correctly, earn 1 point. If wrong, draw a penalty card!</p>
                 <p><strong>3.</strong> Complete the sensual forfeit on the penalty card</p>
-                <p><strong>4.</strong> First to reach <strong>5 points wins</strong> and claims control for the night 👑</p>
-                <p style="margin-top: 12px; font-style: italic; color: rgba(248, 229, 229, 0.8);">💡 Tip: Tap any card to flip it and see the decorative back</p>
             </div>
         </div>
 
@@ -671,6 +714,14 @@
                     <div class="score-buttons">
                         <button class="score-btn" onclick="updateScore(1, 1)">+</button>
                         <button class="score-btn" onclick="updateScore(1, -1)">−</button>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-name" contenteditable="true" id="player2Name" style="cursor: text; padding: 5px; border-radius: 5px; transition: all 0.3s;" onfocus="this.style.background='rgba(255,105,180,0.2)'" onblur="this.style.background='transparent'">Player 2</div>
+                    <div class="score-display" id="score2">0</div>
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="updateScore(2, 1)">+</button>
+                        <button class="score-btn" onclick="updateScore(2, -1)">−</button>
                     </div>
                 </div>
             </div>
@@ -766,7 +817,6 @@
             </div>
         </div>
 
-        <p class="flip-hint">💡 Tap each card to flip and see the decorative back</p>
     </div>
 
     <div class="winner-modal" id="winnerModal">
